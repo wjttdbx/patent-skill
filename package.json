@@ -1,0 +1,49 @@
+{
+  "name": "@wjttdbx/patent-skill",
+  "version": "1.10.0",
+  "description": "通用中国专利挖掘发现与交底书生成全流程 Claude Code Skill — 项目扫描→专利点挖掘→查新→交底书生成→自检",
+  "author": {
+    "name": "Hyf13155761827"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "claude-skill",
+    "agentskills",
+    "patent",
+    "disclosure",
+    "patent-mining",
+    "prior-art-search",
+    "专利",
+    "交底书",
+    "专利挖掘",
+    "查新"
+  ],
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    "INSTALL.md",
+    "requirements.txt",
+    "install.js",
+    "prompts/",
+    "tools/",
+    "docs/",
+    "examples/",
+    "tests/"
+  ],
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wjttdbx/patent-skill"
+  },
+  "bugs": {
+    "url": "https://github.com/wjttdbx/patent-skill/issues"
+  },
+  "homepage": "https://github.com/wjttdbx/patent-skill#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

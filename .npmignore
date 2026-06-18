@@ -1,0 +1,19 @@
+# Node.js — 排除所有层级的 node_modules（npm 仅自动忽略根目录的）
+node_modules/
+package-lock.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# git 相关
+.git/
+.gitignore
