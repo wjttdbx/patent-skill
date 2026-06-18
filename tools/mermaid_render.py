@@ -10,7 +10,8 @@
 
 交底书 **3.2 系统框图**与 **3.4 流程图**均使用 fenced mermaid；**不要** ASCII「文字箭头」流程图或框图。
 
-**降级**：某一围栏 ``mmdc`` 生图失败时**不中断**：该处**保留原** `` ```mermaid`` … `` ``` `` 围栏；其余块照常渲染。仍写出 .md 并**照常尝试** ``md_to_docx.py``（Word 中失败块以代码块形式出现）。
+**降级**：某一围栏 ``mmdc`` 生图失败时**默认不中断**：该处**保留原** `` ```mermaid`` … `` ``` `` 围栏；其余块照常渲染。仍写出 .md 并**照常尝试** ``md_to_docx.py``（Word 中失败块以代码块形式出现）。
+使用 ``--strict`` 时，任一失败即退出非零，适用于**定稿交付**场景（确保 `.md` 中不出现未渲染的 mermaid 围栏）。
 
 **清晰度**：默认对 ``mmdc`` 传入较大视口（``-w`` / ``-H``）与 ``-s 2``（Puppeteer 像素密度），PNG 在 Word 中按约 5.5 英寸宽嵌入时更锐利。可用 ``--mmdc-scale 3`` 等进一步提高（文件更大）。
 
@@ -343,6 +344,11 @@ def main(argv: list[str] | None = None) -> int:
         metavar="PX",
         help="mmdc -H：渲染视口高度像素（默认 1050）",
     )
+    p.add_argument(
+        "--strict",
+        action="store_true",
+        help="若任一 mermaid 块渲染失败，则退出码非零（交付定稿时推荐开启，避免交付含未渲染 mermaid 围栏的 .md）",
+    )
     args = p.parse_args(argv)
     if args.mmdc_scale <= 0:
         print("错误：--mmdc-scale 须为正数", file=sys.stderr)
@@ -380,12 +386,15 @@ def main(argv: list[str] | None = None) -> int:
     parts.append("）")
     print("".join(parts), file=sys.stderr)
     if n_fail:
-        print(
-            "[mermaid_render] 已继续生成 Markdown"
-            + (" 并将尝试 Word" if not args.no_docx else "")
-            + "；请检查 Node/mmdc 或修正语法后重跑本脚本。",
-            file=sys.stderr,
+        msg = (
+            "[mermaid_render] "
+            + f"{n_fail} 处 mermaid 渲染失败"
+            + ("（--strict 已开启，退出非零）" if args.strict else "，已保留 fenced 源码并继续")
+            + "；请检查 Node/mmdc 或修正语法后重跑本脚本。"
         )
+        print(msg, file=sys.stderr)
+        if args.strict:
+            return 1
 
     if args.no_docx:
         return 0

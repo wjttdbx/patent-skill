@@ -1,6 +1,6 @@
 {
   "name": "@wjttdbx/patent-skill",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "通用中国专利挖掘发现与交底书生成全流程 Claude Code Skill — 项目扫描→专利点挖掘→查新→交底书生成→自检",
   "author": {
     "name": "Hyf13155761827"
